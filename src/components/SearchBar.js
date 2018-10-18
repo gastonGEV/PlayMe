@@ -13,24 +13,24 @@ const youtube = new YouTube(google_api_key);
 
 class SearchBar extends Component {
   constructor(props) {
-    super(props);
+    super(props); //toda la logica de la class Component
 
     this.state = {
       urlValue: '',
       video: ''
     }
 
-    this.updateInput = this.updateInput.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    //this.updateInput = this.updateInput.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this); // con la arrow function: handleSubmit = (event) => {} no hace falta el bind(this)
   }
 
-  updateInput(event) {
+  updateInput = (event) => {
     this.setState({ 
       urlValue: event.target.value 
     })
   }
 
-  async handleSubmit(event) {
+  handleSubmit = async (event) => {
     event.preventDefault();
 
     console.log('string: ' + this.state.urlValue)
@@ -70,7 +70,7 @@ class SearchBar extends Component {
       <div className="SearchBar"> 
         <Form onSubmit={this.handleSubmit}>
           <InputGroup>
-            <Input type="text" name="urlValue" value={this.state.urlValue} placeholder="song name or URL" onChange={this.updateInput} />
+            <Input type="text" name="urlValue" value={this.state.urlValue} onChange={this.updateInput} placeholder="song name or URL" />
             <Button type="submit">Search</Button>
           </InputGroup>
         </Form>
