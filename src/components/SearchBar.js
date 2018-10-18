@@ -61,7 +61,13 @@ class SearchBar extends Component {
 
     if (this.state.video) {
       const video = this.state.video;
-      card = <CardVideo title={video.title} url={video.url} img={video.thumbnails.high.url} duration={Moment.duration(video.duration, "minutes").format("h:mm:ss")} mp3={video.url} />
+      card = <CardVideo 
+                title = {video.title} 
+                url = {video.url} 
+                img = {video.thumbnails.high.url} 
+                duration = {Moment.duration(video.duration, "minutes").format("h:mm:ss")} 
+                mp3 = {video.url} 
+              />
     } else {
       card = <p>Busca un video negro!!!</p>
     }
