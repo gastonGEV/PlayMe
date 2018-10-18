@@ -58,7 +58,6 @@ class SearchBar extends Component {
   render() {
 
     let card = null;
-
     if (this.state.video) {
       const video = this.state.video;
       card = <CardVideo 
