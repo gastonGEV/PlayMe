@@ -31,7 +31,7 @@ class SearchBar extends Component {
   }
 
   handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); //por defecto html quiere intentar enviar al servidor, con este lo evitamos
 
     console.log('string: ' + this.state.urlValue)
     this.setState({ video: await this.searchVideo()});
