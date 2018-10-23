@@ -40,7 +40,7 @@ class SearchBar extends Component {
     
   }
 
-  async searchVideo() {
+  searchVideo = async () => {
     let video;
     try {
       video = await youtube.getVideo(this.state.urlValue);
