@@ -54,18 +54,23 @@ class SearchBar extends Component {
       const playlist = await youtube.getPlaylist(this.state.urlValue);
       let videos = await playlist.getVideos();
       for (const vid of Object.values(videos)) {
-        video = await youtube.getVideoByID(vid.id).then(delay.bind(null, 500));
+        video = await youtube.getVideoByID(vid.id).then(delay.bind(null, 0));
         this.setState({ video: video });
+        this.setState({ lista: [...this.state.lista, this.state.video] })
+        console.log(this.state.lista);
         this.setState({ card: this.showCard() });
       };
     } else {
       try {
         video = await youtube.getVideo(this.state.urlValue);
       } catch (error) {
+        //url incorrecta
         try {
           let videos = await youtube.searchVideos(this.state.urlValue, 1);
           video = await youtube.getVideoByID(videos[0].id);
           this.setState({ video: video });
+          this.setState({ lista: [...this.state.lista, this.state.video] })
+          console.log(this.state.lista);
           this.setState({ card: this.showCard() });
         } catch (error) {
           return console.log(error)
@@ -89,18 +94,23 @@ class SearchBar extends Component {
    } else {
      card = <p>Busca un video negro!!!</p>
    }
-   this.setState({ lista: [...this.state.lista, this.state.video] })
-   console.log(this.state.lista);
    return card;
+ }
+
+ testing = async (vid) => {
+  //console.log('funca', vid.title);
+  await this.setState({ video: vid });
+  this.setState({ card: this.showCard(vid) });
  }
 
 render() {
   
-  const playlist = this.state.lista.map(function(video, i) { 
+  const playlist = this.state.lista.map((video, i) => { 
     //console.log(video);
     //console.log(this.state.video);
     return (
       <MiniCardVideo
+        passClick={() => this.testing(video)}
         key = {i}
         title={video.title}
         img={video.thumbnails.high.url}
@@ -112,20 +122,20 @@ render() {
     <div className="SearchBar"> 
         <Form onSubmit={this.handleSubmit}>
           <InputGroup>
-            <Input id="searchBar" type="text" name="urlValue" value={this.state.urlValue} onChange={this.updateInput} placeholder="song name or URL" />
+            <Input id="searchBar" type="text" name="urlValue" value={this.state.urlValue} onChange={this.updateInput} placeholder="song name, URL or Playlist URL" />
             <Button id="searchBtn" type="submit">Search</Button>
           </InputGroup>
         </Form>
         <Row id="divCards">
+          <Col id="maxCard" md={{ size: 8, offset: 1 }}>
+            <br></br>
+            {this.state.card}
+          </Col>
           <Col id="test" md={{ size: 3 }}>
             <br></br>
             <div id="playListCards">
               {playlist}
             </div>
-          </Col>
-          <Col id="maxCard" md={{ size: 8, offset: 1 }}>
-            <br></br>
-            {this.state.card}
           </Col>
         </Row>
       </div>
