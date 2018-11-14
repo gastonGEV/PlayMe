@@ -6,6 +6,7 @@ import Moment from 'moment';
 import momentDurationFormatSetup from 'moment-duration-format'; //si lo usa
 //components
 import CardVideo from './CardVideo';
+import MiniCardVideo from './MiniCardVideo';
 //style
 import '../css/SearchBar.scss';
 
@@ -55,7 +56,7 @@ class SearchBar extends Component {
       for (const vid of Object.values(videos)) {
         video = await youtube.getVideoByID(vid.id).then(delay.bind(null, 500));
         this.setState({ video: video });
-        this.setState({ card: this.show() });
+        this.setState({ card: this.showCard() });
       };
     } else {
       try {
@@ -65,7 +66,7 @@ class SearchBar extends Component {
           let videos = await youtube.searchVideos(this.state.urlValue, 1);
           video = await youtube.getVideoByID(videos[0].id);
           this.setState({ video: video });
-          return this.setState({ card: this.show() });
+          this.setState({ card: this.showCard() });
         } catch (error) {
           return console.log(error)
         }
@@ -73,7 +74,7 @@ class SearchBar extends Component {
     }
   }
 
- show = () => {
+ showCard = () => {
    let card = null;
    //console.log(this.state.video);
    if (this.state.video) {
@@ -88,17 +89,24 @@ class SearchBar extends Component {
    } else {
      card = <p>Busca un video negro!!!</p>
    }
-   this.setState({ lista: [...this.state.lista, card] })
+   this.setState({ lista: [...this.state.lista, this.state.video] })
    console.log(this.state.lista);
    return card;
  }
 
 render() {
   
-  // if (this.state.video) {
-  //   this.state.lista.push(this.state.card);
-   
-  // }
+  const playlist = this.state.lista.map(function(video, i) { 
+    //console.log(video);
+    //console.log(this.state.video);
+    return (
+      <MiniCardVideo
+        key = {i}
+        title={video.title}
+        img={video.thumbnails.high.url}
+      />
+    )
+  });
 
   return (
     <div className="SearchBar"> 
@@ -108,8 +116,14 @@ render() {
             <Button id="searchBtn" type="submit">Search</Button>
           </InputGroup>
         </Form>
-        <Row>
-          <Col sm="12" md={{ size: 8, offset: 2 }}>
+        <Row id="divCards">
+          <Col id="test" md={{ size: 3 }}>
+            <br></br>
+            <div id="playListCards">
+              {playlist}
+            </div>
+          </Col>
+          <Col id="maxCard" md={{ size: 8, offset: 1 }}>
             <br></br>
             {this.state.card}
           </Col>

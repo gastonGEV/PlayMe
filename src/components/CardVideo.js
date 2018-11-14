@@ -16,7 +16,7 @@ class CardVideo extends Component {
           <CardBody>
             <CardText>Duration: {this.props.duration}</CardText>
             <CardLink href="#">MP3</CardLink>
-            <CardLink href="#">Play</CardLink>
+            {/* <CardLink href="#">Play</CardLink> */}
           </CardBody>
         </Card>
       </div>
